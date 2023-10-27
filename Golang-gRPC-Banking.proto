@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+package rGPC_Banking;
+
+service BankingService {
+    rpc CreateAccount(CreateAccountRequest) returns (CreateAccountResponse);
+    rpc ReadAccount(ReadAccountRequest) returns (ReadAccountResponse);
+    rpc DepositMoney(DepositMoneyRequest) returns (DepositMoneyResponse);
+    rpc WithdrawMoney(WithdrawMoneyRequest) returns (WithdrawMoneyResponse);
+}
+
+message CreateAccountRequest {
+    string Name = 1;
+    string Email = 2;
+    string PhoneNumber = 3;
+}
+
+message CreateAccountResponse {
+    string ID = 1;
+}
+
+message ReadAccountRequest {
+    string ID =1;
+}
+
+message ReadAccountResponse {
+    string ID = 1;
+    string Name = 2;
+    string Email = 3;
+    string PhoneNumber = 4;
+}
+
+message DepositMoneyRequest {
+    string ID = 1;
+    int64 Money = 2;
+}
+
+message DepositMoneyResponse {
+    string Result = 1;
+}
+
+message WithdrawMoneyRequest {
+    string ID = 1;
+    int64 Money = 2;
+}
+
+message WithdrawMoneyResponse {
+    string Result = 1;
+}
