@@ -1,0 +1,67 @@
+syntax = "proto3";
+
+package rGPC_Banking;
+
+import "google/api/annotations.proto";
+
+option go_package = "github.com/dang252/Golang-gRPC-Banking";
+
+service BankingService {
+    rpc CreateAccount(CreateAccountRequest) returns (CreateAccountResponse){
+        option (google.api.http) = {
+            post: "/CreateAccount"
+            body: '*'
+        };
+    };
+    rpc ReadAccount(ReadAccountRequest) returns (ReadAccountResponse) {
+        option (google.api.http) = {
+            get: "/Account/{ID}"
+        };
+    };
+    rpc DepositMoney(DepositMoneyRequest) returns (DepositMoneyResponse);
+    rpc WithdrawMoney(WithdrawMoneyRequest) returns (WithdrawMoneyResponse);
+    // rpc SomeMessage(SomeMsg) returns (SomeMsg);
+}
+
+// message SomeMsg {
+//     string Msg = 1;
+// }
+
+message CreateAccountRequest {
+    string Name = 1;
+    string Email = 2;
+    string PhoneNumber = 3;
+}
+
+message CreateAccountResponse {
+    int32 ID = 1;
+}
+
+message ReadAccountRequest {
+    int32 ID =1;
+}
+
+message ReadAccountResponse {
+    int32 ID = 1;
+    string Name = 2;
+    string Email = 3;
+    string PhoneNumber = 4;
+}
+
+message DepositMoneyRequest {
+    int32 ID = 1;
+    int64 Money = 2;
+}
+
+message DepositMoneyResponse {
+    string Result = 1;
+}
+
+message WithdrawMoneyRequest {
+    int32 ID = 1;
+    int64 Money = 2;
+}
+
+message WithdrawMoneyResponse {
+    string Result = 1;
+}

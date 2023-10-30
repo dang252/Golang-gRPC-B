@@ -4,7 +4,7 @@ import (
 	"context"
 	"log"
 
-	pb "github.com/dang252/Golang-gRPC-Banking"
+	pb "github.com/dang252/Golang-gRPC-Banking/Bankingpb"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )
@@ -15,6 +15,14 @@ func CreateAccount(c pb.BankingServiceClient, Name string, Email string, PhoneNu
 		log.Fatalf("Can't Create New Account")
 	}
 	log.Printf("ID:%v", response.GetID())
+}
+
+func ReadAccount(c pb.BankingServiceClient, ID int32) {
+	response, err := c.ReadAccount(context.Background(), &pb.ReadAccountRequest{ID: ID})
+	if err != nil {
+		log.Println(err)
+	}
+	log.Println("Account Data: ", response)
 }
 
 func main() {
@@ -37,5 +45,15 @@ func main() {
 	// log.Printf("ID:%v", res.GetID())
 
 	CreateAccount(c, "NND", "nnd@gmail.com", "0909090909")
+
+	CreateAccount(c, "NND2", "nnd2@gmail.com", "0909090909")
+
+	CreateAccount(c, "NND3", "nnd3@gmail.com", "0909090909")
+
+	ReadAccount(c, 1)
+
+	ReadAccount(c, 0)
+
+	ReadAccount(c, 3)
 
 }

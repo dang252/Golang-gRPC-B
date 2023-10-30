@@ -5,9 +5,21 @@ import (
 	"log"
 	"net"
 
-	pb "github.com/dang252/Golang-gRPC-Banking"
+	pb "github.com/dang252/Golang-gRPC-Banking/Bankingpb"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
+
+type client struct {
+	ID          int
+	Name        string
+	Email       string
+	PhoneNumber string
+	Money       int
+}
+
+var clients []client
 
 type BankingServer struct {
 	pb.UnimplementedBankingServiceServer
@@ -15,8 +27,16 @@ type BankingServer struct {
 
 func (bs *BankingServer) CreateAccount(ctx context.Context, req *pb.CreateAccountRequest) (*pb.CreateAccountResponse, error) {
 	log.Println("Create New Accont: ", req.Name)
+	newID := len(clients)
+	clients = append(clients, client{
+		ID:          newID,
+		Name:        req.Name,
+		Email:       req.Email,
+		PhoneNumber: req.PhoneNumber,
+		Money:       0,
+	})
 	response := &pb.CreateAccountResponse{
-		ID: "abc1",
+		ID: int32(newID),
 	}
 
 	return response, nil
@@ -24,7 +44,15 @@ func (bs *BankingServer) CreateAccount(ctx context.Context, req *pb.CreateAccoun
 
 func (bs *BankingServer) ReadAccount(ctx context.Context, req *pb.ReadAccountRequest) (*pb.ReadAccountResponse, error) {
 	log.Println("Read Data:", req.ID)
-	response := &pb.ReadAccountResponse{}
+	if req.ID >= int32(len(clients)) {
+		return nil, status.Error(codes.InvalidArgument, "Invalid ID")
+	}
+	response := &pb.ReadAccountResponse{
+		ID:          int32(clients[req.ID].ID),
+		Name:        clients[req.ID].Name,
+		Email:       clients[req.ID].Email,
+		PhoneNumber: clients[req.ID].PhoneNumber,
+	}
 	return response, nil
 }
 
