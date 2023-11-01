@@ -9,7 +9,7 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 )
 
-func CreateAccount(c pb.BankingServiceClient, Name string, Email string, PhoneNumber string) {
+func CreateAccount(c pb.UserManagermentClient, Name string, Email string, PhoneNumber string) {
 	response, err := c.CreateAccount(context.Background(), &pb.CreateAccountRequest{Name: Name, Email: Email, PhoneNumber: PhoneNumber})
 	if err != nil {
 		log.Fatalf("Can't Create New Account")
@@ -17,12 +17,28 @@ func CreateAccount(c pb.BankingServiceClient, Name string, Email string, PhoneNu
 	log.Printf("ID:%v", response.GetID())
 }
 
-func ReadAccount(c pb.BankingServiceClient, ID int32) {
+func ReadAccount(c pb.UserManagermentClient, ID int32) {
 	response, err := c.ReadAccount(context.Background(), &pb.ReadAccountRequest{ID: ID})
 	if err != nil {
 		log.Println(err)
 	}
 	log.Println("Account Data: ", response)
+}
+
+func DepositMoney(uc pb.BankingServiceClient, ID int32, Money int64) {
+	response, err := uc.DepositMoney(context.Background(), &pb.DepositMoneyRequest{ID: ID, Money: Money})
+	if err != nil {
+		log.Println(err)
+	}
+	log.Println("result ", response)
+}
+
+func WithdrawMoney(uc pb.BankingServiceClient, ID int32, Money int64) {
+	response, err := uc.WithdrawMoney(context.Background(), &pb.WithdrawMoneyRequest{ID: ID, Money: Money})
+	if err != nil {
+		log.Println(err)
+	}
+	log.Println("result ", response)
 }
 
 func main() {
@@ -35,8 +51,8 @@ func main() {
 	// ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 
 	// defer cancel()
-
 	c := pb.NewBankingServiceClient(conn)
+	uc := pb.NewUserManagermentClient(conn)
 	// res, err := c.CreateAccount(ctx, &pb.CreateAccountRequest{Name: "nnd", Email: "nnd@gmail", PhoneNumber: ""})
 
 	// if err != nil {
@@ -44,16 +60,22 @@ func main() {
 	// }
 	// log.Printf("ID:%v", res.GetID())
 
-	CreateAccount(c, "NND", "nnd@gmail.com", "0909090909")
+	CreateAccount(uc, "NND", "nnd@gmail.com", "0909090909")
 
-	CreateAccount(c, "NND2", "nnd2@gmail.com", "0909090909")
+	CreateAccount(uc, "NND2", "nnd2@gmail.com", "0909090909")
 
-	CreateAccount(c, "NND3", "nnd3@gmail.com", "0909090909")
+	CreateAccount(uc, "NND3", "nnd3@gmail.com", "0909090909")
 
-	ReadAccount(c, 1)
+	ReadAccount(uc, 1)
 
-	ReadAccount(c, 0)
+	ReadAccount(uc, 0)
 
-	ReadAccount(c, 3)
+	DepositMoney(c, 1, 100)
+
+	WithdrawMoney(c, 1, 50)
+
+	WithdrawMoney(c, 1, 100)
+
+	// ReadAccount(c, 3)
 
 }

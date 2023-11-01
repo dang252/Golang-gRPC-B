@@ -26,3 +26,6 @@ server:
 
 client:
 	go run Banking_client/main.go
+
+proxy:
+	go run Banking_proxy/proxy.go

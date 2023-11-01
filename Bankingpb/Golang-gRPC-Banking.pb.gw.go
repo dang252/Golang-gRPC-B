@@ -13,14 +13,14 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
-	"github.com/grpc-ecosystem/grpc-gateway/v2/utilities"
+	"github.com/golang/protobuf/descriptor"
+	"github.com/golang/protobuf/proto"
+	"github.com/grpc-ecosystem/grpc-gateway/runtime"
+	"github.com/grpc-ecosystem/grpc-gateway/utilities"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/grpclog"
-	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
-	"google.golang.org/protobuf/proto"
 )
 
 // Suppress "imported and not used" errors
@@ -29,9 +29,9 @@ var _ io.Reader
 var _ status.Status
 var _ = runtime.String
 var _ = utilities.NewDoubleArray
-var _ = metadata.Join
+var _ = descriptor.ForMessage
 
-func request_BankingService_CreateAccount_0(ctx context.Context, marshaler runtime.Marshaler, client BankingServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_UserManagerment_CreateAccount_0(ctx context.Context, marshaler runtime.Marshaler, client UserManagermentClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq CreateAccountRequest
 	var metadata runtime.ServerMetadata
 
@@ -48,7 +48,7 @@ func request_BankingService_CreateAccount_0(ctx context.Context, marshaler runti
 
 }
 
-func local_request_BankingService_CreateAccount_0(ctx context.Context, marshaler runtime.Marshaler, server BankingServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_UserManagerment_CreateAccount_0(ctx context.Context, marshaler runtime.Marshaler, server UserManagermentServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq CreateAccountRequest
 	var metadata runtime.ServerMetadata
 
@@ -65,7 +65,7 @@ func local_request_BankingService_CreateAccount_0(ctx context.Context, marshaler
 
 }
 
-func request_BankingService_ReadAccount_0(ctx context.Context, marshaler runtime.Marshaler, client BankingServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_UserManagerment_ReadAccount_0(ctx context.Context, marshaler runtime.Marshaler, client UserManagermentClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq ReadAccountRequest
 	var metadata runtime.ServerMetadata
 
@@ -82,6 +82,7 @@ func request_BankingService_ReadAccount_0(ctx context.Context, marshaler runtime
 	}
 
 	protoReq.ID, err = runtime.Int32(val)
+
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "ID", err)
 	}
@@ -91,7 +92,7 @@ func request_BankingService_ReadAccount_0(ctx context.Context, marshaler runtime
 
 }
 
-func local_request_BankingService_ReadAccount_0(ctx context.Context, marshaler runtime.Marshaler, server BankingServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_UserManagerment_ReadAccount_0(ctx context.Context, marshaler runtime.Marshaler, server UserManagermentServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq ReadAccountRequest
 	var metadata runtime.ServerMetadata
 
@@ -108,6 +109,7 @@ func local_request_BankingService_ReadAccount_0(ctx context.Context, marshaler r
 	}
 
 	protoReq.ID, err = runtime.Int32(val)
+
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "ID", err)
 	}
@@ -117,69 +119,59 @@ func local_request_BankingService_ReadAccount_0(ctx context.Context, marshaler r
 
 }
 
-// RegisterBankingServiceHandlerServer registers the http handlers for service BankingService to "mux".
-// UnaryRPC     :call BankingServiceServer directly.
+// RegisterUserManagermentHandlerServer registers the http handlers for service UserManagerment to "mux".
+// UnaryRPC     :call UserManagermentServer directly.
 // StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
-// Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterBankingServiceHandlerFromEndpoint instead.
-func RegisterBankingServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux, server BankingServiceServer) error {
+// Note that using this registration option will cause many gRPC library features (such as grpc.SendHeader, etc) to stop working. Consider using RegisterUserManagermentHandlerFromEndpoint instead.
+func RegisterUserManagermentHandlerServer(ctx context.Context, mux *runtime.ServeMux, server UserManagermentServer) error {
 
-	mux.Handle("POST", pattern_BankingService_CreateAccount_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_UserManagerment_CreateAccount_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
-		var stream runtime.ServerTransportStream
-		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/rGPC_Banking.BankingService/CreateAccount", runtime.WithHTTPPathPattern("/CreateAccount"))
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_BankingService_CreateAccount_0(annotatedContext, inboundMarshaler, server, req, pathParams)
-		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
-		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		resp, md, err := local_request_UserManagerment_CreateAccount_0(rctx, inboundMarshaler, server, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
-			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_BankingService_CreateAccount_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_UserManagerment_CreateAccount_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("GET", pattern_BankingService_ReadAccount_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_UserManagerment_ReadAccount_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
-		var stream runtime.ServerTransportStream
-		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/rGPC_Banking.BankingService/ReadAccount", runtime.WithHTTPPathPattern("/Account/{ID}"))
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_BankingService_ReadAccount_0(annotatedContext, inboundMarshaler, server, req, pathParams)
-		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
-		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		resp, md, err := local_request_UserManagerment_ReadAccount_0(rctx, inboundMarshaler, server, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
-			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_BankingService_ReadAccount_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_UserManagerment_ReadAccount_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
 	return nil
 }
 
-// RegisterBankingServiceHandlerFromEndpoint is same as RegisterBankingServiceHandler but
+// RegisterUserManagermentHandlerFromEndpoint is same as RegisterUserManagermentHandler but
 // automatically dials to "endpoint" and closes the connection when "ctx" gets done.
-func RegisterBankingServiceHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
-	conn, err := grpc.DialContext(ctx, endpoint, opts...)
+func RegisterUserManagermentHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
+	conn, err := grpc.Dial(endpoint, opts...)
 	if err != nil {
 		return err
 	}
@@ -198,63 +190,59 @@ func RegisterBankingServiceHandlerFromEndpoint(ctx context.Context, mux *runtime
 		}()
 	}()
 
-	return RegisterBankingServiceHandler(ctx, mux, conn)
+	return RegisterUserManagermentHandler(ctx, mux, conn)
 }
 
-// RegisterBankingServiceHandler registers the http handlers for service BankingService to "mux".
+// RegisterUserManagermentHandler registers the http handlers for service UserManagerment to "mux".
 // The handlers forward requests to the grpc endpoint over "conn".
-func RegisterBankingServiceHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
-	return RegisterBankingServiceHandlerClient(ctx, mux, NewBankingServiceClient(conn))
+func RegisterUserManagermentHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
+	return RegisterUserManagermentHandlerClient(ctx, mux, NewUserManagermentClient(conn))
 }
 
-// RegisterBankingServiceHandlerClient registers the http handlers for service BankingService
-// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "BankingServiceClient".
-// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "BankingServiceClient"
+// RegisterUserManagermentHandlerClient registers the http handlers for service UserManagerment
+// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "UserManagermentClient".
+// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "UserManagermentClient"
 // doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
-// "BankingServiceClient" to call the correct interceptors.
-func RegisterBankingServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux, client BankingServiceClient) error {
+// "UserManagermentClient" to call the correct interceptors.
+func RegisterUserManagermentHandlerClient(ctx context.Context, mux *runtime.ServeMux, client UserManagermentClient) error {
 
-	mux.Handle("POST", pattern_BankingService_CreateAccount_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_UserManagerment_CreateAccount_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/rGPC_Banking.BankingService/CreateAccount", runtime.WithHTTPPathPattern("/CreateAccount"))
+		rctx, err := runtime.AnnotateContext(ctx, mux, req)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_BankingService_CreateAccount_0(annotatedContext, inboundMarshaler, client, req, pathParams)
-		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		resp, md, err := request_UserManagerment_CreateAccount_0(rctx, inboundMarshaler, client, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
-			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_BankingService_CreateAccount_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_UserManagerment_CreateAccount_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("GET", pattern_BankingService_ReadAccount_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_UserManagerment_ReadAccount_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/rGPC_Banking.BankingService/ReadAccount", runtime.WithHTTPPathPattern("/Account/{ID}"))
+		rctx, err := runtime.AnnotateContext(ctx, mux, req)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_BankingService_ReadAccount_0(annotatedContext, inboundMarshaler, client, req, pathParams)
-		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		resp, md, err := request_UserManagerment_ReadAccount_0(rctx, inboundMarshaler, client, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
-			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_BankingService_ReadAccount_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_UserManagerment_ReadAccount_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -262,13 +250,13 @@ func RegisterBankingServiceHandlerClient(ctx context.Context, mux *runtime.Serve
 }
 
 var (
-	pattern_BankingService_CreateAccount_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"CreateAccount"}, ""))
+	pattern_UserManagerment_CreateAccount_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"CreateAccount"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_BankingService_ReadAccount_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1}, []string{"Account", "ID"}, ""))
+	pattern_UserManagerment_ReadAccount_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1}, []string{"Account", "ID"}, "", runtime.AssumeColonVerbOpt(true)))
 )
 
 var (
-	forward_BankingService_CreateAccount_0 = runtime.ForwardResponseMessage
+	forward_UserManagerment_CreateAccount_0 = runtime.ForwardResponseMessage
 
-	forward_BankingService_ReadAccount_0 = runtime.ForwardResponseMessage
+	forward_UserManagerment_ReadAccount_0 = runtime.ForwardResponseMessage
 )

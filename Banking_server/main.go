@@ -16,16 +16,20 @@ type client struct {
 	Name        string
 	Email       string
 	PhoneNumber string
-	Money       int
+	Money       int64
 }
 
 var clients []client
+
+type UserManagerment struct {
+	pb.UnimplementedUserManagermentServer
+}
 
 type BankingServer struct {
 	pb.UnimplementedBankingServiceServer
 }
 
-func (bs *BankingServer) CreateAccount(ctx context.Context, req *pb.CreateAccountRequest) (*pb.CreateAccountResponse, error) {
+func (ums *UserManagerment) CreateAccount(ctx context.Context, req *pb.CreateAccountRequest) (*pb.CreateAccountResponse, error) {
 	log.Println("Create New Accont: ", req.Name)
 	newID := len(clients)
 	clients = append(clients, client{
@@ -42,7 +46,7 @@ func (bs *BankingServer) CreateAccount(ctx context.Context, req *pb.CreateAccoun
 	return response, nil
 }
 
-func (bs *BankingServer) ReadAccount(ctx context.Context, req *pb.ReadAccountRequest) (*pb.ReadAccountResponse, error) {
+func (ums *UserManagerment) ReadAccount(ctx context.Context, req *pb.ReadAccountRequest) (*pb.ReadAccountResponse, error) {
 	log.Println("Read Data:", req.ID)
 	if req.ID >= int32(len(clients)) {
 		return nil, status.Error(codes.InvalidArgument, "Invalid ID")
@@ -58,18 +62,27 @@ func (bs *BankingServer) ReadAccount(ctx context.Context, req *pb.ReadAccountReq
 
 func (bs *BankingServer) DepositMoney(ctx context.Context, req *pb.DepositMoneyRequest) (*pb.DepositMoneyResponse, error) {
 	log.Println("Account ID: ", req.ID, " Deposit Money: ", req.Money)
+	clients[req.ID].Money += req.Money
+	log.Println("Account ID: ", req.ID, " Money after deposit: ", clients[req.ID].Money)
 	response := &pb.DepositMoneyResponse{
-		Result: "success",
+		Result: "Deposit success",
 	}
 	return response, nil
 }
 
 func (bs *BankingServer) WithdrawMoney(ctx context.Context, req *pb.WithdrawMoneyRequest) (*pb.WithdrawMoneyResponse, error) {
 	log.Println("Account ID: ", req.ID, " Withdraw Money: ", req.Money)
-	response := &pb.WithdrawMoneyResponse{
-		Result: "success",
+	if clients[req.ID].Money >= req.Money {
+		clients[req.ID].Money -= req.Money
+		log.Println("Account ID: ", req.ID, " Money after withdraw: ", clients[req.ID].Money)
+		response := &pb.WithdrawMoneyResponse{
+			Result: "Withdraw success",
+		}
+		return response, nil
+	} else {
+		log.Println("Failed withdraw money")
+		return nil, status.Error(codes.InvalidArgument, "invalid money")
 	}
-	return response, nil
 }
 
 func main() {
@@ -82,6 +95,7 @@ func main() {
 	s := grpc.NewServer()
 
 	pb.RegisterBankingServiceServer(s, &BankingServer{})
+	pb.RegisterUserManagermentServer(s, &UserManagerment{})
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("grpc server failed: %v", err)
 	}
