@@ -25,6 +25,7 @@ type UserManagementClient interface {
 	CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*CreateUserResponse, error)
 	ReadUser(ctx context.Context, in *ReadUserRequest, opts ...grpc.CallOption) (*ReadUserResponse, error)
 	UserReport(ctx context.Context, in *UserReportRequest, opts ...grpc.CallOption) (*UserReportResponse, error)
+	DeleteUser(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*DeleteUserResponse, error)
 }
 
 type userManagementClient struct {
@@ -62,6 +63,15 @@ func (c *userManagementClient) UserReport(ctx context.Context, in *UserReportReq
 	return out, nil
 }
 
+func (c *userManagementClient) DeleteUser(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*DeleteUserResponse, error) {
+	out := new(DeleteUserResponse)
+	err := c.cc.Invoke(ctx, "/rGPC_Banking.UserManagement/DeleteUser", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserManagementServer is the server API for UserManagement service.
 // All implementations must embed UnimplementedUserManagementServer
 // for forward compatibility
@@ -69,6 +79,7 @@ type UserManagementServer interface {
 	CreateUser(context.Context, *CreateUserRequest) (*CreateUserResponse, error)
 	ReadUser(context.Context, *ReadUserRequest) (*ReadUserResponse, error)
 	UserReport(context.Context, *UserReportRequest) (*UserReportResponse, error)
+	DeleteUser(context.Context, *DeleteUserRequest) (*DeleteUserResponse, error)
 	mustEmbedUnimplementedUserManagementServer()
 }
 
@@ -84,6 +95,9 @@ func (UnimplementedUserManagementServer) ReadUser(context.Context, *ReadUserRequ
 }
 func (UnimplementedUserManagementServer) UserReport(context.Context, *UserReportRequest) (*UserReportResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UserReport not implemented")
+}
+func (UnimplementedUserManagementServer) DeleteUser(context.Context, *DeleteUserRequest) (*DeleteUserResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteUser not implemented")
 }
 func (UnimplementedUserManagementServer) mustEmbedUnimplementedUserManagementServer() {}
 
@@ -152,6 +166,24 @@ func _UserManagement_UserReport_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserManagement_DeleteUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteUserRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserManagementServer).DeleteUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/rGPC_Banking.UserManagement/DeleteUser",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserManagementServer).DeleteUser(ctx, req.(*DeleteUserRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // UserManagement_ServiceDesc is the grpc.ServiceDesc for UserManagement service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -171,6 +203,10 @@ var UserManagement_ServiceDesc = grpc.ServiceDesc{
 			MethodName: "UserReport",
 			Handler:    _UserManagement_UserReport_Handler,
 		},
+		{
+			MethodName: "DeleteUser",
+			Handler:    _UserManagement_DeleteUser_Handler,
+		},
 	},
 	Streams:  []grpc.StreamDesc{},
 	Metadata: "Bankingpb/Golang-gRPC-Banking.proto",
@@ -186,6 +222,7 @@ type BankingServiceClient interface {
 	BankAccountReport(ctx context.Context, in *BankAccountReportRequest, opts ...grpc.CallOption) (*BankAccountReportResponse, error)
 	AllAccountReport(ctx context.Context, in *EmptyRequest, opts ...grpc.CallOption) (*AllAccountReportResponse, error)
 	GetUserAllAccount(ctx context.Context, in *GetUserAllAccountRequest, opts ...grpc.CallOption) (*GetUserAllAccountResponse, error)
+	DeleteBankAccount(ctx context.Context, in *DeleteBankAccountRequest, opts ...grpc.CallOption) (*DeleteBankAccountResponse, error)
 }
 
 type bankingServiceClient struct {
@@ -250,6 +287,15 @@ func (c *bankingServiceClient) GetUserAllAccount(ctx context.Context, in *GetUse
 	return out, nil
 }
 
+func (c *bankingServiceClient) DeleteBankAccount(ctx context.Context, in *DeleteBankAccountRequest, opts ...grpc.CallOption) (*DeleteBankAccountResponse, error) {
+	out := new(DeleteBankAccountResponse)
+	err := c.cc.Invoke(ctx, "/rGPC_Banking.BankingService/DeleteBankAccount", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // BankingServiceServer is the server API for BankingService service.
 // All implementations must embed UnimplementedBankingServiceServer
 // for forward compatibility
@@ -260,6 +306,7 @@ type BankingServiceServer interface {
 	BankAccountReport(context.Context, *BankAccountReportRequest) (*BankAccountReportResponse, error)
 	AllAccountReport(context.Context, *EmptyRequest) (*AllAccountReportResponse, error)
 	GetUserAllAccount(context.Context, *GetUserAllAccountRequest) (*GetUserAllAccountResponse, error)
+	DeleteBankAccount(context.Context, *DeleteBankAccountRequest) (*DeleteBankAccountResponse, error)
 	mustEmbedUnimplementedBankingServiceServer()
 }
 
@@ -284,6 +331,9 @@ func (UnimplementedBankingServiceServer) AllAccountReport(context.Context, *Empt
 }
 func (UnimplementedBankingServiceServer) GetUserAllAccount(context.Context, *GetUserAllAccountRequest) (*GetUserAllAccountResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUserAllAccount not implemented")
+}
+func (UnimplementedBankingServiceServer) DeleteBankAccount(context.Context, *DeleteBankAccountRequest) (*DeleteBankAccountResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteBankAccount not implemented")
 }
 func (UnimplementedBankingServiceServer) mustEmbedUnimplementedBankingServiceServer() {}
 
@@ -406,6 +456,24 @@ func _BankingService_GetUserAllAccount_Handler(srv interface{}, ctx context.Cont
 	return interceptor(ctx, in, info, handler)
 }
 
+func _BankingService_DeleteBankAccount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteBankAccountRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BankingServiceServer).DeleteBankAccount(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/rGPC_Banking.BankingService/DeleteBankAccount",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BankingServiceServer).DeleteBankAccount(ctx, req.(*DeleteBankAccountRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // BankingService_ServiceDesc is the grpc.ServiceDesc for BankingService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -436,6 +504,10 @@ var BankingService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetUserAllAccount",
 			Handler:    _BankingService_GetUserAllAccount_Handler,
+		},
+		{
+			MethodName: "DeleteBankAccount",
+			Handler:    _BankingService_DeleteBankAccount_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

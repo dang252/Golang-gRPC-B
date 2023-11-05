@@ -158,6 +158,38 @@ func (ums *UserManagement) UserReport(ctx context.Context, req *pb.UserReportReq
 	return response, nil
 }
 
+func (ums *UserManagement) DeleteUser(ctx context.Context, req *pb.DeleteUserRequest) (*pb.DeleteUserResponse, error) {
+	banking_conn, err := grpc.Dial(":50051", grpc.WithTransportCredentials(insecure.NewCredentials()))
+	if err != nil {
+		log.Println("Proplem with banking server: %v", err)
+	}
+	defer banking_conn.Close()
+
+	if err != nil {
+		return nil, errors.New("Can't connect to banking server")
+	}
+
+	banking_client := pb.NewBankingServiceClient(banking_conn)
+
+	accounts, err := banking_client.GetUserAllAccount(ctx, &pb.GetUserAllAccountRequest{Id : req.Id})
+
+	if err != nil {
+		return nil, errors.New("Can't get account data")
+	} 
+
+	for _, id := range accounts.BankAccountIds {
+		banking_client.DeleteBankAccount(ctx, &pb.DeleteBankAccountRequest{Id: id}); 
+	}
+	user := &User{}
+	if err := DB.Where(&User{ Id : req.Id}).Delete(&user).Error; err!=nil{
+		return nil, errors.New("Can't get user accounts")
+	}
+	response := &pb.DeleteUserResponse{
+		Result : "Account deleted",
+	}
+	return response, nil
+}
+
 // func (bs *BankingServer) CreateBankAccount(ctx context.Context, req *pb.CreateBankAccountRequest) (*pb.CreateBankAccountResponse, error) {
 // 	log.Println("Create New Bank Accont for user: ", req.UserId, " ", req.Balance)
 // 	new_account := BankAccount{UserId: req.UserId, OpeningDate: time.Now(), CurrentBalance : req.Balance }

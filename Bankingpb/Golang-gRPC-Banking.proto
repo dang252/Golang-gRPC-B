@@ -23,6 +23,11 @@ service UserManagement {
             get: "/Userreport/{id}"
         };
     };
+    rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse){
+        option (google.api.http) = {
+            get: '/DeleteUser/{id}'
+        };
+    };
 }
 
 service BankingService {
@@ -60,6 +65,11 @@ service BankingService {
             get: '/AllAccount/{id}'
         };
     }; 
+    rpc DeleteBankAccount(DeleteBankAccountRequest) returns (DeleteBankAccountResponse){
+        option (google.api.http) = {
+            get: '/DeleteAccount/{id}'
+        };
+    };
 }
 
 // message SomeMsg {
@@ -148,4 +158,20 @@ message GetUserAllAccountRequest {
 
 message GetUserAllAccountResponse {
     repeated int32 bank_account_ids = 1;
+}
+
+message DeleteUserRequest {
+    int32 id = 1;
+}
+
+message DeleteUserResponse {
+    string result = 1;
+}
+
+message DeleteBankAccountRequest {
+    int32 id = 1;
+}
+
+message DeleteBankAccountResponse {
+    string result = 1;
 }

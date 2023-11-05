@@ -148,11 +148,11 @@ func (bs *BankingServer) DepositMoney(ctx context.Context, req *pb.DepositMoneyR
 	log.Println("Account Id: ", req.Id, " Deposit Money: ", req.Money)
 	trans_res := DB.Transaction(func(tx *gorm.DB) error {
 		new_transaction := Transaction{AccountId : req.Id, Type : "Deposit", Amount : req.Money, Date : time.Now()}
-		if err := DB.Create(&new_transaction).Error; err != nil {
+		if err := tx.Create(&new_transaction).Error; err != nil {
    			return err
  		}
 		account.CurrentBalance += req.Money
-		if err := DB.Save(&account).Error; err != nil {
+		if err := tx.Save(&account).Error; err != nil {
    			return err
  		}
 		return nil
@@ -179,11 +179,11 @@ func (bs *BankingServer) WithdrawMoney(ctx context.Context, req *pb.WithdrawMone
 	log.Println("Account Id: ", req.Id, " Withdraw Money: ", req.Money)
 	trans_res := DB.Transaction(func(tx *gorm.DB) error {
 		new_transaction := Transaction{AccountId : req.Id, Type : "Withdraw", Amount : req.Money, Date : time.Now()}
-		if err := DB.Create(&new_transaction).Error; err != nil {
+		if err := tx.Create(&new_transaction).Error; err != nil {
    			return err
  		}
 		account.CurrentBalance -= req.Money
-		if err := DB.Save(&account).Error; err != nil {
+		if err := tx.Save(&account).Error; err != nil {
    			return err
  		}
 		return nil
@@ -200,7 +200,7 @@ func (bs *BankingServer) WithdrawMoney(ctx context.Context, req *pb.WithdrawMone
 
 func (bs *BankingServer) BankAccountReport(ctx context.Context, req *pb.BankAccountReportRequest) (*pb.BankAccountReportResponse, error){
 	var transactions []Transaction
-	if err := DB.Where(Transaction{ AccountId : req.AccountId}).Find(&transactions).Error; err!=nil{
+	if err := DB.Where(&Transaction{ AccountId : req.AccountId}).Find(&transactions).Error; err!=nil{
 		return nil, errors.New("Can't get Account report")
 	}
 	var total_deposit int64 = 0
@@ -214,8 +214,6 @@ func (bs *BankingServer) BankAccountReport(ctx context.Context, req *pb.BankAcco
 		}
 		trans_info = append(trans_info, transaction.Type + ": " + strconv.FormatInt(transaction.Amount,10) + " Date: " + transaction.Date.String())
 	}
-	log.Println(total_deposit, total_withdraw)
-	
 	response := &pb.BankAccountReportResponse{
 		AccountId: req.AccountId,
 		Transactions: trans_info,
@@ -225,14 +223,14 @@ func (bs *BankingServer) BankAccountReport(ctx context.Context, req *pb.BankAcco
 	return response, nil
 }
 func (bs *BankingServer) AllAccountReport(ctx context.Context, req *pb.EmptyRequest) (*pb.AllAccountReportResponse, error) {
-	var count int64 = 0
-	if err := DB.Model(&BankAccount{}).Count(&count).Error; err != nil{
+	accounts := []BankAccount{}
+	if err := DB.Find(&accounts).Error; err != nil{
 		return nil, errors.New("Can't get report")
 	}
 	reports := []*pb.BankAccountReportResponse{}
 	
-	for i:=1; i <= int(count); i++ {
-		report, err := bs.BankAccountReport(ctx, &pb.BankAccountReportRequest{AccountId: int32(i)}); 
+	for _,acc := range accounts {
+		report, err := bs.BankAccountReport(ctx, &pb.BankAccountReportRequest{AccountId: acc.Id}); 
 		if err != nil {
 			return nil, errors.New("Can't get report")
 		}
@@ -246,15 +244,39 @@ func (bs *BankingServer) AllAccountReport(ctx context.Context, req *pb.EmptyRequ
 
 func (bs *BankingServer) GetUserAllAccount(ctx context.Context, req *pb.GetUserAllAccountRequest) (*pb.GetUserAllAccountResponse, error) {
 	accounts := []BankAccount{}
-	if err := DB.Where(BankAccount{ UserId : req.Id}).Find(&accounts).Error; err!=nil{
-		return nil, errors.New("Can't get user accounts")
+	if err := DB.Where(&BankAccount{ UserId : req.Id}).Find(&accounts).Error; err!=nil{
+		return nil, errors.New("Can't delete account")
 	}
 	ids := []int32{}
 	for _,acc := range accounts {
 		ids = append(ids, acc.Id)
 	}
-	response := &pb.GetUserAllAccountResponse {
+	response := &pb.GetUserAllAccountResponse{
 		BankAccountIds: ids,
+	}
+	return response, nil
+}
+
+func (bs *BankingServer) DeleteBankAccount(ctx context.Context, req *pb.DeleteBankAccountRequest) (*pb.DeleteBankAccountResponse, error) {
+
+	trans_res := DB.Transaction(func(tx *gorm.DB) error {
+		transactions := Transaction{}
+		if err := tx.Where(&Transaction{ AccountId : req.Id}).Delete(&transactions).Error; err != nil {
+   			return err
+ 		}
+		account := BankAccount{}
+		if err := tx.Where(&BankAccount{ Id : req.Id}).Delete(&account).Error; err!=nil{
+			return err
+		}
+		return nil
+	})
+	if trans_res != nil {
+		return nil, errors.New("Can't delete")
+	}
+
+
+	response := &pb.DeleteBankAccountResponse{
+		Result : "Account deleted",
 	}
 	return response, nil
 }
