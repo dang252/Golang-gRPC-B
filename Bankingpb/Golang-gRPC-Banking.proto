@@ -4,67 +4,147 @@ package rGPC_Banking;
 
 import "google/api/annotations.proto";
 
- option go_package = "github.com/dang252/Golang-gRPC-Banking;Golang_gRPC_Banking";
+option go_package = "github.com/dang252/Golang-gRPC-Banking;Golang_gRPC_Banking";
 
 service UserManagerment {
-    rpc CreateAccount(CreateAccountRequest) returns (CreateAccountResponse){
+    rpc CreateUser(CreateUserRequest) returns (CreateUserResponse){
         option (google.api.http) = {
-            post: "/CreateAccount"
+            post: "/CreateUser"
             body: '*'
         };
     };
-    rpc ReadAccount(ReadAccountRequest) returns (ReadAccountResponse) {
+    rpc ReadUser(ReadUserRequest) returns (ReadUserResponse) {
         option (google.api.http) = {
-            get: "/Account/{ID}"
+            get: "/User/{id}"
+        };
+    };
+    rpc UserReport(UserReportRequest) returns (UserReportResponse){
+        option (google.api.http) = {
+            get: "/Userreport/{id}"
         };
     };
 }
 
 service BankingService {
-    rpc DepositMoney(DepositMoneyRequest) returns (DepositMoneyResponse);
-    rpc WithdrawMoney(WithdrawMoneyRequest) returns (WithdrawMoneyResponse);
-    // rpc SomeMessage(SomeMsg) returns (SomeMsg);
+    rpc CreateBankAccount(CreateBankAccountRequest) returns (CreateBankAccountResponse){
+        option (google.api.http) = {
+            post: "/CreateBankAccount"
+            body: '*'
+        };
+    }
+    rpc DepositMoney(DepositMoneyRequest) returns (DepositMoneyResponse){
+        option (google.api.http) = {
+            post: "/Deposit"
+            body: '*'
+        };
+    };
+    rpc WithdrawMoney(WithdrawMoneyRequest) returns (WithdrawMoneyResponse){
+        option (google.api.http) = {
+            post: "/Withdraw"
+            body: '*'
+        };
+    };
+    rpc BankAccountReport(BankAccountReportRequest) returns (BankAccountReportResponse){
+        option (google.api.http) = {
+            post: '/BankAccountReport'
+            body: '*'
+        };
+    };
+    rpc AllAccountReport(EmptyRequest) returns (AllAccountReportResponse){
+        option (google.api.http) = {
+            get: '/AllAccountReport'
+        };
+    };
+    rpc GetUserAllAccount(GetUserAllAccountRequest) returns (GetUserAllAccountResponse){
+        option (google.api.http) = {
+            get: '/AllAccount/{id}'
+        };
+    }; 
 }
 
 // message SomeMsg {
 //     string Msg = 1;
 // }
 
-message CreateAccountRequest {
-    string Name = 1;
-    string Email = 2;
-    string PhoneNumber = 3;
+
+message CreateUserRequest {
+    string name = 1;
+    string email = 2;
+    string phone_number = 3;
 }
 
-message CreateAccountResponse {
-    int32 ID = 1;
+message CreateUserResponse {
+    int32 id = 1;
 }
 
-message ReadAccountRequest {
-    int32 ID =1;
+message ReadUserRequest {
+    int32 id =1;
 }
 
-message ReadAccountResponse {
-    int32 ID = 1;
-    string Name = 2;
-    string Email = 3;
-    string PhoneNumber = 4;
+message ReadUserResponse {
+    int32 id = 1;
+    string name = 2;
+    string email = 3;
+    string phone_number = 4;
 }
 
+message CreateBankAccountRequest{
+    int32 user_id = 1;
+    int64 balance = 2;
+}
+
+message CreateBankAccountResponse{
+    int32 id = 1;
+}
 message DepositMoneyRequest {
-    int32 ID = 1;
-    int64 Money = 2;
+    int32 id = 1;
+    int64 money = 2;
 }
 
 message DepositMoneyResponse {
-    string Result = 1;
+    string result = 1;
 }
 
 message WithdrawMoneyRequest {
-    int32 ID = 1;
-    int64 Money = 2;
+    int32 id = 1;
+    int64 money = 2;
 }
 
 message WithdrawMoneyResponse {
-    string Result = 1;
+    string result = 1;
+}
+
+message EmptyRequest {
+
+}
+
+message BankAccountReportRequest {
+    int32 account_id = 1;
+}
+
+message BankAccountReportResponse {
+    int32 account_id = 1;
+    repeated string transactions = 2;
+    int64 total_deposit = 3;
+    int64 total_withdraw = 4;
+}
+
+message AllAccountReportResponse {
+    repeated BankAccountReportResponse bank_account_report = 1;
+}
+
+message UserReportRequest {
+    int32 id = 1;
+}
+
+message UserReportResponse {
+    repeated BankAccountReportResponse bank_account_report = 2;
+}
+
+message GetUserAllAccountRequest {
+    int32 id = 1;
+}
+
+message GetUserAllAccountResponse {
+    repeated int32 bank_account_ids = 1;
 }

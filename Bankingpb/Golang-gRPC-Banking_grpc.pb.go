@@ -22,8 +22,9 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type UserManagermentClient interface {
-	CreateAccount(ctx context.Context, in *CreateAccountRequest, opts ...grpc.CallOption) (*CreateAccountResponse, error)
-	ReadAccount(ctx context.Context, in *ReadAccountRequest, opts ...grpc.CallOption) (*ReadAccountResponse, error)
+	CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*CreateUserResponse, error)
+	ReadUser(ctx context.Context, in *ReadUserRequest, opts ...grpc.CallOption) (*ReadUserResponse, error)
+	UserReport(ctx context.Context, in *UserReportRequest, opts ...grpc.CallOption) (*UserReportResponse, error)
 }
 
 type userManagermentClient struct {
@@ -34,18 +35,27 @@ func NewUserManagermentClient(cc grpc.ClientConnInterface) UserManagermentClient
 	return &userManagermentClient{cc}
 }
 
-func (c *userManagermentClient) CreateAccount(ctx context.Context, in *CreateAccountRequest, opts ...grpc.CallOption) (*CreateAccountResponse, error) {
-	out := new(CreateAccountResponse)
-	err := c.cc.Invoke(ctx, "/rGPC_Banking.UserManagerment/CreateAccount", in, out, opts...)
+func (c *userManagermentClient) CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*CreateUserResponse, error) {
+	out := new(CreateUserResponse)
+	err := c.cc.Invoke(ctx, "/rGPC_Banking.UserManagerment/CreateUser", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *userManagermentClient) ReadAccount(ctx context.Context, in *ReadAccountRequest, opts ...grpc.CallOption) (*ReadAccountResponse, error) {
-	out := new(ReadAccountResponse)
-	err := c.cc.Invoke(ctx, "/rGPC_Banking.UserManagerment/ReadAccount", in, out, opts...)
+func (c *userManagermentClient) ReadUser(ctx context.Context, in *ReadUserRequest, opts ...grpc.CallOption) (*ReadUserResponse, error) {
+	out := new(ReadUserResponse)
+	err := c.cc.Invoke(ctx, "/rGPC_Banking.UserManagerment/ReadUser", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userManagermentClient) UserReport(ctx context.Context, in *UserReportRequest, opts ...grpc.CallOption) (*UserReportResponse, error) {
+	out := new(UserReportResponse)
+	err := c.cc.Invoke(ctx, "/rGPC_Banking.UserManagerment/UserReport", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -56,8 +66,9 @@ func (c *userManagermentClient) ReadAccount(ctx context.Context, in *ReadAccount
 // All implementations must embed UnimplementedUserManagermentServer
 // for forward compatibility
 type UserManagermentServer interface {
-	CreateAccount(context.Context, *CreateAccountRequest) (*CreateAccountResponse, error)
-	ReadAccount(context.Context, *ReadAccountRequest) (*ReadAccountResponse, error)
+	CreateUser(context.Context, *CreateUserRequest) (*CreateUserResponse, error)
+	ReadUser(context.Context, *ReadUserRequest) (*ReadUserResponse, error)
+	UserReport(context.Context, *UserReportRequest) (*UserReportResponse, error)
 	mustEmbedUnimplementedUserManagermentServer()
 }
 
@@ -65,11 +76,14 @@ type UserManagermentServer interface {
 type UnimplementedUserManagermentServer struct {
 }
 
-func (UnimplementedUserManagermentServer) CreateAccount(context.Context, *CreateAccountRequest) (*CreateAccountResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateAccount not implemented")
+func (UnimplementedUserManagermentServer) CreateUser(context.Context, *CreateUserRequest) (*CreateUserResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateUser not implemented")
 }
-func (UnimplementedUserManagermentServer) ReadAccount(context.Context, *ReadAccountRequest) (*ReadAccountResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ReadAccount not implemented")
+func (UnimplementedUserManagermentServer) ReadUser(context.Context, *ReadUserRequest) (*ReadUserResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ReadUser not implemented")
+}
+func (UnimplementedUserManagermentServer) UserReport(context.Context, *UserReportRequest) (*UserReportResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UserReport not implemented")
 }
 func (UnimplementedUserManagermentServer) mustEmbedUnimplementedUserManagermentServer() {}
 
@@ -84,38 +98,56 @@ func RegisterUserManagermentServer(s grpc.ServiceRegistrar, srv UserManagermentS
 	s.RegisterService(&UserManagerment_ServiceDesc, srv)
 }
 
-func _UserManagerment_CreateAccount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreateAccountRequest)
+func _UserManagerment_CreateUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateUserRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UserManagermentServer).CreateAccount(ctx, in)
+		return srv.(UserManagermentServer).CreateUser(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rGPC_Banking.UserManagerment/CreateAccount",
+		FullMethod: "/rGPC_Banking.UserManagerment/CreateUser",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserManagermentServer).CreateAccount(ctx, req.(*CreateAccountRequest))
+		return srv.(UserManagermentServer).CreateUser(ctx, req.(*CreateUserRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _UserManagerment_ReadAccount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ReadAccountRequest)
+func _UserManagerment_ReadUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ReadUserRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UserManagermentServer).ReadAccount(ctx, in)
+		return srv.(UserManagermentServer).ReadUser(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rGPC_Banking.UserManagerment/ReadAccount",
+		FullMethod: "/rGPC_Banking.UserManagerment/ReadUser",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserManagermentServer).ReadAccount(ctx, req.(*ReadAccountRequest))
+		return srv.(UserManagermentServer).ReadUser(ctx, req.(*ReadUserRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserManagerment_UserReport_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserReportRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserManagermentServer).UserReport(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/rGPC_Banking.UserManagerment/UserReport",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserManagermentServer).UserReport(ctx, req.(*UserReportRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -128,12 +160,16 @@ var UserManagerment_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*UserManagermentServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "CreateAccount",
-			Handler:    _UserManagerment_CreateAccount_Handler,
+			MethodName: "CreateUser",
+			Handler:    _UserManagerment_CreateUser_Handler,
 		},
 		{
-			MethodName: "ReadAccount",
-			Handler:    _UserManagerment_ReadAccount_Handler,
+			MethodName: "ReadUser",
+			Handler:    _UserManagerment_ReadUser_Handler,
+		},
+		{
+			MethodName: "UserReport",
+			Handler:    _UserManagerment_UserReport_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -144,8 +180,12 @@ var UserManagerment_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type BankingServiceClient interface {
+	CreateBankAccount(ctx context.Context, in *CreateBankAccountRequest, opts ...grpc.CallOption) (*CreateBankAccountResponse, error)
 	DepositMoney(ctx context.Context, in *DepositMoneyRequest, opts ...grpc.CallOption) (*DepositMoneyResponse, error)
 	WithdrawMoney(ctx context.Context, in *WithdrawMoneyRequest, opts ...grpc.CallOption) (*WithdrawMoneyResponse, error)
+	BankAccountReport(ctx context.Context, in *BankAccountReportRequest, opts ...grpc.CallOption) (*BankAccountReportResponse, error)
+	AllAccountReport(ctx context.Context, in *EmptyRequest, opts ...grpc.CallOption) (*AllAccountReportResponse, error)
+	GetUserAllAccount(ctx context.Context, in *GetUserAllAccountRequest, opts ...grpc.CallOption) (*GetUserAllAccountResponse, error)
 }
 
 type bankingServiceClient struct {
@@ -154,6 +194,15 @@ type bankingServiceClient struct {
 
 func NewBankingServiceClient(cc grpc.ClientConnInterface) BankingServiceClient {
 	return &bankingServiceClient{cc}
+}
+
+func (c *bankingServiceClient) CreateBankAccount(ctx context.Context, in *CreateBankAccountRequest, opts ...grpc.CallOption) (*CreateBankAccountResponse, error) {
+	out := new(CreateBankAccountResponse)
+	err := c.cc.Invoke(ctx, "/rGPC_Banking.BankingService/CreateBankAccount", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *bankingServiceClient) DepositMoney(ctx context.Context, in *DepositMoneyRequest, opts ...grpc.CallOption) (*DepositMoneyResponse, error) {
@@ -174,12 +223,43 @@ func (c *bankingServiceClient) WithdrawMoney(ctx context.Context, in *WithdrawMo
 	return out, nil
 }
 
+func (c *bankingServiceClient) BankAccountReport(ctx context.Context, in *BankAccountReportRequest, opts ...grpc.CallOption) (*BankAccountReportResponse, error) {
+	out := new(BankAccountReportResponse)
+	err := c.cc.Invoke(ctx, "/rGPC_Banking.BankingService/BankAccountReport", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *bankingServiceClient) AllAccountReport(ctx context.Context, in *EmptyRequest, opts ...grpc.CallOption) (*AllAccountReportResponse, error) {
+	out := new(AllAccountReportResponse)
+	err := c.cc.Invoke(ctx, "/rGPC_Banking.BankingService/AllAccountReport", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *bankingServiceClient) GetUserAllAccount(ctx context.Context, in *GetUserAllAccountRequest, opts ...grpc.CallOption) (*GetUserAllAccountResponse, error) {
+	out := new(GetUserAllAccountResponse)
+	err := c.cc.Invoke(ctx, "/rGPC_Banking.BankingService/GetUserAllAccount", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // BankingServiceServer is the server API for BankingService service.
 // All implementations must embed UnimplementedBankingServiceServer
 // for forward compatibility
 type BankingServiceServer interface {
+	CreateBankAccount(context.Context, *CreateBankAccountRequest) (*CreateBankAccountResponse, error)
 	DepositMoney(context.Context, *DepositMoneyRequest) (*DepositMoneyResponse, error)
 	WithdrawMoney(context.Context, *WithdrawMoneyRequest) (*WithdrawMoneyResponse, error)
+	BankAccountReport(context.Context, *BankAccountReportRequest) (*BankAccountReportResponse, error)
+	AllAccountReport(context.Context, *EmptyRequest) (*AllAccountReportResponse, error)
+	GetUserAllAccount(context.Context, *GetUserAllAccountRequest) (*GetUserAllAccountResponse, error)
 	mustEmbedUnimplementedBankingServiceServer()
 }
 
@@ -187,11 +267,23 @@ type BankingServiceServer interface {
 type UnimplementedBankingServiceServer struct {
 }
 
+func (UnimplementedBankingServiceServer) CreateBankAccount(context.Context, *CreateBankAccountRequest) (*CreateBankAccountResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateBankAccount not implemented")
+}
 func (UnimplementedBankingServiceServer) DepositMoney(context.Context, *DepositMoneyRequest) (*DepositMoneyResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DepositMoney not implemented")
 }
 func (UnimplementedBankingServiceServer) WithdrawMoney(context.Context, *WithdrawMoneyRequest) (*WithdrawMoneyResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method WithdrawMoney not implemented")
+}
+func (UnimplementedBankingServiceServer) BankAccountReport(context.Context, *BankAccountReportRequest) (*BankAccountReportResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method BankAccountReport not implemented")
+}
+func (UnimplementedBankingServiceServer) AllAccountReport(context.Context, *EmptyRequest) (*AllAccountReportResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AllAccountReport not implemented")
+}
+func (UnimplementedBankingServiceServer) GetUserAllAccount(context.Context, *GetUserAllAccountRequest) (*GetUserAllAccountResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUserAllAccount not implemented")
 }
 func (UnimplementedBankingServiceServer) mustEmbedUnimplementedBankingServiceServer() {}
 
@@ -204,6 +296,24 @@ type UnsafeBankingServiceServer interface {
 
 func RegisterBankingServiceServer(s grpc.ServiceRegistrar, srv BankingServiceServer) {
 	s.RegisterService(&BankingService_ServiceDesc, srv)
+}
+
+func _BankingService_CreateBankAccount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateBankAccountRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BankingServiceServer).CreateBankAccount(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/rGPC_Banking.BankingService/CreateBankAccount",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BankingServiceServer).CreateBankAccount(ctx, req.(*CreateBankAccountRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _BankingService_DepositMoney_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -242,6 +352,60 @@ func _BankingService_WithdrawMoney_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
+func _BankingService_BankAccountReport_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(BankAccountReportRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BankingServiceServer).BankAccountReport(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/rGPC_Banking.BankingService/BankAccountReport",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BankingServiceServer).BankAccountReport(ctx, req.(*BankAccountReportRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BankingService_AllAccountReport_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(EmptyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BankingServiceServer).AllAccountReport(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/rGPC_Banking.BankingService/AllAccountReport",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BankingServiceServer).AllAccountReport(ctx, req.(*EmptyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BankingService_GetUserAllAccount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUserAllAccountRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BankingServiceServer).GetUserAllAccount(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/rGPC_Banking.BankingService/GetUserAllAccount",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BankingServiceServer).GetUserAllAccount(ctx, req.(*GetUserAllAccountRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // BankingService_ServiceDesc is the grpc.ServiceDesc for BankingService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -250,12 +414,28 @@ var BankingService_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*BankingServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
+			MethodName: "CreateBankAccount",
+			Handler:    _BankingService_CreateBankAccount_Handler,
+		},
+		{
 			MethodName: "DepositMoney",
 			Handler:    _BankingService_DepositMoney_Handler,
 		},
 		{
 			MethodName: "WithdrawMoney",
 			Handler:    _BankingService_WithdrawMoney_Handler,
+		},
+		{
+			MethodName: "BankAccountReport",
+			Handler:    _BankingService_BankAccountReport_Handler,
+		},
+		{
+			MethodName: "AllAccountReport",
+			Handler:    _BankingService_AllAccountReport_Handler,
+		},
+		{
+			MethodName: "GetUserAllAccount",
+			Handler:    _BankingService_GetUserAllAccount_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

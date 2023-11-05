@@ -10,19 +10,19 @@ import (
 )
 
 func CreateAccount(c pb.UserManagermentClient, Name string, Email string, PhoneNumber string) {
-	response, err := c.CreateAccount(context.Background(), &pb.CreateAccountRequest{Name: Name, Email: Email, PhoneNumber: PhoneNumber})
+	response, err := c.CreateUser(context.Background(), &pb.CreateUserRequest{Name: Name, Email: Email, PhoneNumber: PhoneNumber})
 	if err != nil {
-		log.Fatalf("Can't Create New Account")
+		log.Fatalf("Can't Create New User")
 	}
 	log.Printf("ID:%v", response.GetID())
 }
 
 func ReadAccount(c pb.UserManagermentClient, ID int32) {
-	response, err := c.ReadAccount(context.Background(), &pb.ReadAccountRequest{ID: ID})
+	response, err := c.ReadUser(context.Background(), &pb.ReadUserRequest{ID: ID})
 	if err != nil {
 		log.Println(err)
 	}
-	log.Println("Account Data: ", response)
+	log.Println("User Data: ", response)
 }
 
 func DepositMoney(uc pb.BankingServiceClient, ID int32, Money int64) {
