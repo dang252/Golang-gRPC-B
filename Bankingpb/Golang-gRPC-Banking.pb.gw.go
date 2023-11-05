@@ -31,7 +31,7 @@ var _ = runtime.String
 var _ = utilities.NewDoubleArray
 var _ = descriptor.ForMessage
 
-func request_UserManagerment_CreateUser_0(ctx context.Context, marshaler runtime.Marshaler, client UserManagermentClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_UserManagement_CreateUser_0(ctx context.Context, marshaler runtime.Marshaler, client UserManagementClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq CreateUserRequest
 	var metadata runtime.ServerMetadata
 
@@ -48,7 +48,7 @@ func request_UserManagerment_CreateUser_0(ctx context.Context, marshaler runtime
 
 }
 
-func local_request_UserManagerment_CreateUser_0(ctx context.Context, marshaler runtime.Marshaler, server UserManagermentServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_UserManagement_CreateUser_0(ctx context.Context, marshaler runtime.Marshaler, server UserManagementServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq CreateUserRequest
 	var metadata runtime.ServerMetadata
 
@@ -65,7 +65,7 @@ func local_request_UserManagerment_CreateUser_0(ctx context.Context, marshaler r
 
 }
 
-func request_UserManagerment_ReadUser_0(ctx context.Context, marshaler runtime.Marshaler, client UserManagermentClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_UserManagement_ReadUser_0(ctx context.Context, marshaler runtime.Marshaler, client UserManagementClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq ReadUserRequest
 	var metadata runtime.ServerMetadata
 
@@ -92,7 +92,7 @@ func request_UserManagerment_ReadUser_0(ctx context.Context, marshaler runtime.M
 
 }
 
-func local_request_UserManagerment_ReadUser_0(ctx context.Context, marshaler runtime.Marshaler, server UserManagermentServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_UserManagement_ReadUser_0(ctx context.Context, marshaler runtime.Marshaler, server UserManagementServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq ReadUserRequest
 	var metadata runtime.ServerMetadata
 
@@ -119,7 +119,7 @@ func local_request_UserManagerment_ReadUser_0(ctx context.Context, marshaler run
 
 }
 
-func request_UserManagerment_UserReport_0(ctx context.Context, marshaler runtime.Marshaler, client UserManagermentClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_UserManagement_UserReport_0(ctx context.Context, marshaler runtime.Marshaler, client UserManagementClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq UserReportRequest
 	var metadata runtime.ServerMetadata
 
@@ -146,7 +146,7 @@ func request_UserManagerment_UserReport_0(ctx context.Context, marshaler runtime
 
 }
 
-func local_request_UserManagerment_UserReport_0(ctx context.Context, marshaler runtime.Marshaler, server UserManagermentServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_UserManagement_UserReport_0(ctx context.Context, marshaler runtime.Marshaler, server UserManagementServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq UserReportRequest
 	var metadata runtime.ServerMetadata
 
@@ -381,13 +381,13 @@ func local_request_BankingService_GetUserAllAccount_0(ctx context.Context, marsh
 
 }
 
-// RegisterUserManagermentHandlerServer registers the http handlers for service UserManagerment to "mux".
-// UnaryRPC     :call UserManagermentServer directly.
+// RegisterUserManagementHandlerServer registers the http handlers for service UserManagement to "mux".
+// UnaryRPC     :call UserManagementServer directly.
 // StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
-// Note that using this registration option will cause many gRPC library features (such as grpc.SendHeader, etc) to stop working. Consider using RegisterUserManagermentHandlerFromEndpoint instead.
-func RegisterUserManagermentHandlerServer(ctx context.Context, mux *runtime.ServeMux, server UserManagermentServer) error {
+// Note that using this registration option will cause many gRPC library features (such as grpc.SendHeader, etc) to stop working. Consider using RegisterUserManagementHandlerFromEndpoint instead.
+func RegisterUserManagementHandlerServer(ctx context.Context, mux *runtime.ServeMux, server UserManagementServer) error {
 
-	mux.Handle("POST", pattern_UserManagerment_CreateUser_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_UserManagement_CreateUser_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -396,18 +396,18 @@ func RegisterUserManagermentHandlerServer(ctx context.Context, mux *runtime.Serv
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_UserManagerment_CreateUser_0(rctx, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_UserManagement_CreateUser_0(rctx, inboundMarshaler, server, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_UserManagerment_CreateUser_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_UserManagement_CreateUser_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("GET", pattern_UserManagerment_ReadUser_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_UserManagement_ReadUser_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -416,18 +416,18 @@ func RegisterUserManagermentHandlerServer(ctx context.Context, mux *runtime.Serv
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_UserManagerment_ReadUser_0(rctx, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_UserManagement_ReadUser_0(rctx, inboundMarshaler, server, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_UserManagerment_ReadUser_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_UserManagement_ReadUser_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("GET", pattern_UserManagerment_UserReport_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_UserManagement_UserReport_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -436,14 +436,14 @@ func RegisterUserManagermentHandlerServer(ctx context.Context, mux *runtime.Serv
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_UserManagerment_UserReport_0(rctx, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_UserManagement_UserReport_0(rctx, inboundMarshaler, server, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_UserManagerment_UserReport_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_UserManagement_UserReport_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -579,9 +579,9 @@ func RegisterBankingServiceHandlerServer(ctx context.Context, mux *runtime.Serve
 	return nil
 }
 
-// RegisterUserManagermentHandlerFromEndpoint is same as RegisterUserManagermentHandler but
+// RegisterUserManagementHandlerFromEndpoint is same as RegisterUserManagementHandler but
 // automatically dials to "endpoint" and closes the connection when "ctx" gets done.
-func RegisterUserManagermentHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
+func RegisterUserManagementHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
 	conn, err := grpc.Dial(endpoint, opts...)
 	if err != nil {
 		return err
@@ -601,23 +601,23 @@ func RegisterUserManagermentHandlerFromEndpoint(ctx context.Context, mux *runtim
 		}()
 	}()
 
-	return RegisterUserManagermentHandler(ctx, mux, conn)
+	return RegisterUserManagementHandler(ctx, mux, conn)
 }
 
-// RegisterUserManagermentHandler registers the http handlers for service UserManagerment to "mux".
+// RegisterUserManagementHandler registers the http handlers for service UserManagement to "mux".
 // The handlers forward requests to the grpc endpoint over "conn".
-func RegisterUserManagermentHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
-	return RegisterUserManagermentHandlerClient(ctx, mux, NewUserManagermentClient(conn))
+func RegisterUserManagementHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
+	return RegisterUserManagementHandlerClient(ctx, mux, NewUserManagementClient(conn))
 }
 
-// RegisterUserManagermentHandlerClient registers the http handlers for service UserManagerment
-// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "UserManagermentClient".
-// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "UserManagermentClient"
+// RegisterUserManagementHandlerClient registers the http handlers for service UserManagement
+// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "UserManagementClient".
+// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "UserManagementClient"
 // doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
-// "UserManagermentClient" to call the correct interceptors.
-func RegisterUserManagermentHandlerClient(ctx context.Context, mux *runtime.ServeMux, client UserManagermentClient) error {
+// "UserManagementClient" to call the correct interceptors.
+func RegisterUserManagementHandlerClient(ctx context.Context, mux *runtime.ServeMux, client UserManagementClient) error {
 
-	mux.Handle("POST", pattern_UserManagerment_CreateUser_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_UserManagement_CreateUser_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -626,18 +626,18 @@ func RegisterUserManagermentHandlerClient(ctx context.Context, mux *runtime.Serv
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_UserManagerment_CreateUser_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_UserManagement_CreateUser_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_UserManagerment_CreateUser_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_UserManagement_CreateUser_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("GET", pattern_UserManagerment_ReadUser_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_UserManagement_ReadUser_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -646,18 +646,18 @@ func RegisterUserManagermentHandlerClient(ctx context.Context, mux *runtime.Serv
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_UserManagerment_ReadUser_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_UserManagement_ReadUser_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_UserManagerment_ReadUser_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_UserManagement_ReadUser_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("GET", pattern_UserManagerment_UserReport_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_UserManagement_UserReport_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -666,14 +666,14 @@ func RegisterUserManagermentHandlerClient(ctx context.Context, mux *runtime.Serv
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_UserManagerment_UserReport_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_UserManagement_UserReport_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_UserManagerment_UserReport_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_UserManagement_UserReport_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -681,19 +681,19 @@ func RegisterUserManagermentHandlerClient(ctx context.Context, mux *runtime.Serv
 }
 
 var (
-	pattern_UserManagerment_CreateUser_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"CreateUser"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_UserManagement_CreateUser_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"CreateUser"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_UserManagerment_ReadUser_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1}, []string{"User", "id"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_UserManagement_ReadUser_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1}, []string{"User", "id"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_UserManagerment_UserReport_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1}, []string{"Userreport", "id"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_UserManagement_UserReport_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1}, []string{"Userreport", "id"}, "", runtime.AssumeColonVerbOpt(true)))
 )
 
 var (
-	forward_UserManagerment_CreateUser_0 = runtime.ForwardResponseMessage
+	forward_UserManagement_CreateUser_0 = runtime.ForwardResponseMessage
 
-	forward_UserManagerment_ReadUser_0 = runtime.ForwardResponseMessage
+	forward_UserManagement_ReadUser_0 = runtime.ForwardResponseMessage
 
-	forward_UserManagerment_UserReport_0 = runtime.ForwardResponseMessage
+	forward_UserManagement_UserReport_0 = runtime.ForwardResponseMessage
 )
 
 // RegisterBankingServiceHandlerFromEndpoint is same as RegisterBankingServiceHandler but

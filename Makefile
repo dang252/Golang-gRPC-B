@@ -21,8 +21,11 @@ gateway:
 		Bankingpb/Golang-gRPC-Banking.proto
 
 
-server:
+bank-server:
 	go run Banking_server/main.go
+
+user-server:
+	go run UserManagement_server/main.go
 
 client:
 	go run Banking_client/main.go

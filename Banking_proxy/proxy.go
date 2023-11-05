@@ -17,7 +17,8 @@ import (
 var (
 	// command-line options:
 	// gRPC server endpoint
-	grpcServerEndpoint = flag.String("grpc-server-endpoint", "localhost:50051", "gRPC server endpoint")
+	BankingServerEndpoint = flag.String("Banking-server-endpoint", "localhost:50051", "Banking server endpoint")
+	UserManagementServerEndpoint = flag.String("User-management-server-endpoint", "localhost:50052", "User management server endpoint")
 )
 
 func run() error {
@@ -30,8 +31,8 @@ func run() error {
 	mux := runtime.NewServeMux()
 	opts := []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
 	log.Println("proxy running")
-	err := pb.RegisterBankingServiceHandlerFromEndpoint(ctx, mux, *grpcServerEndpoint, opts)
-	err1 := pb.RegisterUserManagermentHandlerFromEndpoint(ctx, mux, *grpcServerEndpoint, opts)
+	err := pb.RegisterBankingServiceHandlerFromEndpoint(ctx, mux, *BankingServerEndpoint, opts)
+	err1 := pb.RegisterUserManagementHandlerFromEndpoint(ctx, mux, *UserManagementServerEndpoint, opts)
 	if err != nil {
 		return err
 	}

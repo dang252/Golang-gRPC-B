@@ -6,7 +6,7 @@ import "google/api/annotations.proto";
 
 option go_package = "github.com/dang252/Golang-gRPC-Banking;Golang_gRPC_Banking";
 
-service UserManagerment {
+service UserManagement {
     rpc CreateUser(CreateUserRequest) returns (CreateUserResponse){
         option (google.api.http) = {
             post: "/CreateUser"
@@ -138,6 +138,7 @@ message UserReportRequest {
 }
 
 message UserReportResponse {
+    string message = 1;
     repeated BankAccountReportResponse bank_account_report = 2;
 }
 

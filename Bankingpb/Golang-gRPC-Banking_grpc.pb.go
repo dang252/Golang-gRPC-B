@@ -18,158 +18,158 @@ import (
 // Requires gRPC-Go v1.32.0 or later.
 const _ = grpc.SupportPackageIsVersion7
 
-// UserManagermentClient is the client API for UserManagerment service.
+// UserManagementClient is the client API for UserManagement service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type UserManagermentClient interface {
+type UserManagementClient interface {
 	CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*CreateUserResponse, error)
 	ReadUser(ctx context.Context, in *ReadUserRequest, opts ...grpc.CallOption) (*ReadUserResponse, error)
 	UserReport(ctx context.Context, in *UserReportRequest, opts ...grpc.CallOption) (*UserReportResponse, error)
 }
 
-type userManagermentClient struct {
+type userManagementClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewUserManagermentClient(cc grpc.ClientConnInterface) UserManagermentClient {
-	return &userManagermentClient{cc}
+func NewUserManagementClient(cc grpc.ClientConnInterface) UserManagementClient {
+	return &userManagementClient{cc}
 }
 
-func (c *userManagermentClient) CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*CreateUserResponse, error) {
+func (c *userManagementClient) CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*CreateUserResponse, error) {
 	out := new(CreateUserResponse)
-	err := c.cc.Invoke(ctx, "/rGPC_Banking.UserManagerment/CreateUser", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rGPC_Banking.UserManagement/CreateUser", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *userManagermentClient) ReadUser(ctx context.Context, in *ReadUserRequest, opts ...grpc.CallOption) (*ReadUserResponse, error) {
+func (c *userManagementClient) ReadUser(ctx context.Context, in *ReadUserRequest, opts ...grpc.CallOption) (*ReadUserResponse, error) {
 	out := new(ReadUserResponse)
-	err := c.cc.Invoke(ctx, "/rGPC_Banking.UserManagerment/ReadUser", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rGPC_Banking.UserManagement/ReadUser", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *userManagermentClient) UserReport(ctx context.Context, in *UserReportRequest, opts ...grpc.CallOption) (*UserReportResponse, error) {
+func (c *userManagementClient) UserReport(ctx context.Context, in *UserReportRequest, opts ...grpc.CallOption) (*UserReportResponse, error) {
 	out := new(UserReportResponse)
-	err := c.cc.Invoke(ctx, "/rGPC_Banking.UserManagerment/UserReport", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/rGPC_Banking.UserManagement/UserReport", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// UserManagermentServer is the server API for UserManagerment service.
-// All implementations must embed UnimplementedUserManagermentServer
+// UserManagementServer is the server API for UserManagement service.
+// All implementations must embed UnimplementedUserManagementServer
 // for forward compatibility
-type UserManagermentServer interface {
+type UserManagementServer interface {
 	CreateUser(context.Context, *CreateUserRequest) (*CreateUserResponse, error)
 	ReadUser(context.Context, *ReadUserRequest) (*ReadUserResponse, error)
 	UserReport(context.Context, *UserReportRequest) (*UserReportResponse, error)
-	mustEmbedUnimplementedUserManagermentServer()
+	mustEmbedUnimplementedUserManagementServer()
 }
 
-// UnimplementedUserManagermentServer must be embedded to have forward compatible implementations.
-type UnimplementedUserManagermentServer struct {
+// UnimplementedUserManagementServer must be embedded to have forward compatible implementations.
+type UnimplementedUserManagementServer struct {
 }
 
-func (UnimplementedUserManagermentServer) CreateUser(context.Context, *CreateUserRequest) (*CreateUserResponse, error) {
+func (UnimplementedUserManagementServer) CreateUser(context.Context, *CreateUserRequest) (*CreateUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateUser not implemented")
 }
-func (UnimplementedUserManagermentServer) ReadUser(context.Context, *ReadUserRequest) (*ReadUserResponse, error) {
+func (UnimplementedUserManagementServer) ReadUser(context.Context, *ReadUserRequest) (*ReadUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ReadUser not implemented")
 }
-func (UnimplementedUserManagermentServer) UserReport(context.Context, *UserReportRequest) (*UserReportResponse, error) {
+func (UnimplementedUserManagementServer) UserReport(context.Context, *UserReportRequest) (*UserReportResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UserReport not implemented")
 }
-func (UnimplementedUserManagermentServer) mustEmbedUnimplementedUserManagermentServer() {}
+func (UnimplementedUserManagementServer) mustEmbedUnimplementedUserManagementServer() {}
 
-// UnsafeUserManagermentServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to UserManagermentServer will
+// UnsafeUserManagementServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to UserManagementServer will
 // result in compilation errors.
-type UnsafeUserManagermentServer interface {
-	mustEmbedUnimplementedUserManagermentServer()
+type UnsafeUserManagementServer interface {
+	mustEmbedUnimplementedUserManagementServer()
 }
 
-func RegisterUserManagermentServer(s grpc.ServiceRegistrar, srv UserManagermentServer) {
-	s.RegisterService(&UserManagerment_ServiceDesc, srv)
+func RegisterUserManagementServer(s grpc.ServiceRegistrar, srv UserManagementServer) {
+	s.RegisterService(&UserManagement_ServiceDesc, srv)
 }
 
-func _UserManagerment_CreateUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _UserManagement_CreateUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CreateUserRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UserManagermentServer).CreateUser(ctx, in)
+		return srv.(UserManagementServer).CreateUser(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rGPC_Banking.UserManagerment/CreateUser",
+		FullMethod: "/rGPC_Banking.UserManagement/CreateUser",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserManagermentServer).CreateUser(ctx, req.(*CreateUserRequest))
+		return srv.(UserManagementServer).CreateUser(ctx, req.(*CreateUserRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _UserManagerment_ReadUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _UserManagement_ReadUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ReadUserRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UserManagermentServer).ReadUser(ctx, in)
+		return srv.(UserManagementServer).ReadUser(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rGPC_Banking.UserManagerment/ReadUser",
+		FullMethod: "/rGPC_Banking.UserManagement/ReadUser",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserManagermentServer).ReadUser(ctx, req.(*ReadUserRequest))
+		return srv.(UserManagementServer).ReadUser(ctx, req.(*ReadUserRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _UserManagerment_UserReport_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _UserManagement_UserReport_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(UserReportRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UserManagermentServer).UserReport(ctx, in)
+		return srv.(UserManagementServer).UserReport(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rGPC_Banking.UserManagerment/UserReport",
+		FullMethod: "/rGPC_Banking.UserManagement/UserReport",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserManagermentServer).UserReport(ctx, req.(*UserReportRequest))
+		return srv.(UserManagementServer).UserReport(ctx, req.(*UserReportRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// UserManagerment_ServiceDesc is the grpc.ServiceDesc for UserManagerment service.
+// UserManagement_ServiceDesc is the grpc.ServiceDesc for UserManagement service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var UserManagerment_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "rGPC_Banking.UserManagerment",
-	HandlerType: (*UserManagermentServer)(nil),
+var UserManagement_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "rGPC_Banking.UserManagement",
+	HandlerType: (*UserManagementServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "CreateUser",
-			Handler:    _UserManagerment_CreateUser_Handler,
+			Handler:    _UserManagement_CreateUser_Handler,
 		},
 		{
 			MethodName: "ReadUser",
-			Handler:    _UserManagerment_ReadUser_Handler,
+			Handler:    _UserManagement_ReadUser_Handler,
 		},
 		{
 			MethodName: "UserReport",
-			Handler:    _UserManagerment_UserReport_Handler,
+			Handler:    _UserManagement_UserReport_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -11,8 +11,6 @@ import (
 
 	pb "github.com/dang252/Golang-gRPC-Banking/Bankingpb"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -34,12 +32,12 @@ import (
 // 	phone_number string
 // }
 
-type User struct {
-	Id int32
-	Name        string
-	Email       string
-	PhoneNumber string
-}
+// type User struct {
+// 	Id int32
+// 	Name        string
+// 	Email       string
+// 	PhoneNumber string
+// }
 
 type BankAccount struct {
 	Id int32
@@ -71,9 +69,9 @@ type Transaction struct {
 // 	date time.Time `gorm:"default:CURRENT_TIMESTAMP()"`
 // }
 
-type UserManagerment struct {
-	pb.UnimplementedUserManagermentServer
-}
+// type UserManagement struct {
+// 	pb.UnimplementedUserManagementServer
+// }
 
 type BankingServer struct {
 	pb.UnimplementedBankingServiceServer
@@ -94,37 +92,37 @@ func DatabaseConnection() {
 	log.Println("db connection successful")
 }
 
-func (ums *UserManagerment) CreateUser(ctx context.Context, req *pb.CreateUserRequest) (*pb.CreateUserResponse, error) {
-	log.Println("Create New Accont: ", req.Name)
-	user := User{Name: req.Name, Email: req.Email, PhoneNumber: req.PhoneNumber}
-	res :=DB.Create(&user)
-	if res.RowsAffected == 0 {
-   		return nil, errors.New("error create user")
- 	}
-	response := &pb.CreateUserResponse{
-		Id: user.Id,
-	}
+// func (ums *UserManagement) CreateUser(ctx context.Context, req *pb.CreateUserRequest) (*pb.CreateUserResponse, error) {
+// 	log.Println("Create New Accont: ", req.Name)
+// 	user := User{Name: req.Name, Email: req.Email, PhoneNumber: req.PhoneNumber}
+// 	res :=DB.Create(&user)
+// 	if res.RowsAffected == 0 {
+//    		return nil, errors.New("error create user")
+//  	}
+// 	response := &pb.CreateUserResponse{
+// 		Id: user.Id,
+// 	}
 
-	return response, nil
-}
+// 	return response, nil
+// }
 
-func (ums *UserManagerment) ReadUser(ctx context.Context, req *pb.ReadUserRequest) (*pb.ReadUserResponse, error) {
-	user := User{Id: req.Id}
-	log.Println("Read User:", req.Id)
-	res:=DB.First(&user);
-	if res.RowsAffected == 0 {
-   		return nil, status.Error(codes.InvalidArgument, "invalid Id")
- 	}
-	response := &pb.ReadUserResponse{
-		Id:          user.Id,
-		Name:        user.Name,
-		Email:       user.Email,
-		PhoneNumber: user.PhoneNumber,
-	}
-	return response, nil
-}
+// func (ums *UserManagementReadUser(ctx context.Context, req *pb.ReadUserRequest) (*pb.ReadUserResponse, error) {
+// 	user := User{Id: req.Id}
+// 	log.Println("Read User:", req.Id)
+// 	res:=DB.First(&user);
+// 	if res.RowsAffected == 0 {
+//    		return nil, status.Error(codes.InvalidArgument, "invalid Id")
+//  	}
+// 	response := &pb.ReadUserResponse{
+// 		Id:          user.Id,
+// 		Name:        user.Name,
+// 		Email:       user.Email,
+// 		PhoneNumber: user.PhoneNumber,
+// 	}
+// 	return response, nil
+// }
 
-// func (ums *UserManagerment) UserReport(ctx context.Context, req *pb.UserReportRequest) (*pb.UserReportResponse, error) {
+// func (ums *UserManagement) UserReport(ctx context.Context, req *pb.UserReportRequest) (*pb.UserReportResponse, error) {
 // 	user 
 // }
 
@@ -271,7 +269,7 @@ func main() {
 	s := grpc.NewServer()
 
 	pb.RegisterBankingServiceServer(s, &BankingServer{})
-	pb.RegisterUserManagermentServer(s, &UserManagerment{})
+	// pb.RegisterUserManagementServer(s, &UserManagement{})
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("grpc server failed: %v", err)
 	}
