@@ -15,29 +15,6 @@ import (
 	"gorm.io/gorm"
 )
 
-// type client struct {
-// 	Id          int
-// 	Name        string
-// 	Email       string
-// 	PhoneNumber string
-// 	Money       int64
-// }
-
-// var clients []client
-
-// type user struct {
-// 	Id int32
-// 	name        string
-// 	email       string
-// 	phone_number string
-// }
-
-// type User struct {
-// 	Id int32
-// 	Name        string
-// 	Email       string
-// 	PhoneNumber string
-// }
 
 type BankAccount struct {
 	Id int32
@@ -53,25 +30,6 @@ type Transaction struct {
 	Amount int64 
 	Date time.Time `gorm:"default:CURRENT_TIMESTAMP()"`
 }
-
-// type bank_account struct {
-// 	Id int32
-// 	user_Id int32
-// 	opening_date time.Time `gorm:"default:CURRENT_TIMESTAMP()"`
-//     current_balance int64
-// }
-
-// type transaction struct {
-// 	Id int32
-// 	account_Id int32
-// 	transaction_type string
-// 	ammount int64 
-// 	date time.Time `gorm:"default:CURRENT_TIMESTAMP()"`
-// }
-
-// type UserManagement struct {
-// 	pb.UnimplementedUserManagementServer
-// }
 
 type BankingServer struct {
 	pb.UnimplementedBankingServiceServer
@@ -91,40 +49,6 @@ func DatabaseConnection() {
 	}
 	log.Println("db connection successful")
 }
-
-// func (ums *UserManagement) CreateUser(ctx context.Context, req *pb.CreateUserRequest) (*pb.CreateUserResponse, error) {
-// 	log.Println("Create New Accont: ", req.Name)
-// 	user := User{Name: req.Name, Email: req.Email, PhoneNumber: req.PhoneNumber}
-// 	res :=DB.Create(&user)
-// 	if res.RowsAffected == 0 {
-//    		return nil, errors.New("error create user")
-//  	}
-// 	response := &pb.CreateUserResponse{
-// 		Id: user.Id,
-// 	}
-
-// 	return response, nil
-// }
-
-// func (ums *UserManagementReadUser(ctx context.Context, req *pb.ReadUserRequest) (*pb.ReadUserResponse, error) {
-// 	user := User{Id: req.Id}
-// 	log.Println("Read User:", req.Id)
-// 	res:=DB.First(&user);
-// 	if res.RowsAffected == 0 {
-//    		return nil, status.Error(codes.InvalidArgument, "invalid Id")
-//  	}
-// 	response := &pb.ReadUserResponse{
-// 		Id:          user.Id,
-// 		Name:        user.Name,
-// 		Email:       user.Email,
-// 		PhoneNumber: user.PhoneNumber,
-// 	}
-// 	return response, nil
-// }
-
-// func (ums *UserManagement) UserReport(ctx context.Context, req *pb.UserReportRequest) (*pb.UserReportResponse, error) {
-// 	user 
-// }
 
 func (bs *BankingServer) CreateBankAccount(ctx context.Context, req *pb.CreateBankAccountRequest) (*pb.CreateBankAccountResponse, error) {
 	log.Println("Create New Bank Accont for user: ", req.UserId, " ", req.Balance)
